@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profiles</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 600px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .search-input {
+        width: 80%;
+        padding: 10px;
+        margin-bottom: 20px;
+      }
+      .profile-list {
+        list-style: none;
+        padding: 0;
+      }
+      .profile-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
+      .profile-item img {
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+      .profile-info {
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://www.unpkg.com/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://www.unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+
+    const { useState } = React;
+    
+    const UserProfile = ({ user }) => (
+      <li className="profile-item">
+        <img src={user.avatar} alt={`${user.name}'s avatar`} width="50" height="50" />
+        <div className="profile-info">
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+        </div>
+      </li>
+    );
+    
+    const App = () => {
+      const [users, setUsers] = useState([
+        { id: 1, name: 'John Doe', email: 'john@example.com', avatar: 'https://via.placeholder.com/50' },
+        { id: 2, name: 'Jane Smith', email: 'jane@example.com', avatar: 'https://via.placeholder.com/50' },
+        { id: 3, name: 'Michael Johnson', email: 'michael@example.com', avatar: 'https://via.placeholder.com/50' },
+        { id: 4, name: 'Emily Davis', email: 'emily@example.com', avatar: 'https://via.placeholder.com/50' }
+      ]);
+      const [searchTerm, setSearchTerm] = useState("");
+    
+      const filteredUsers = users.filter(user => 
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    
+      return (
+        <div className="container">
+          <h1>User Profiles</h1>
+          <input 
+            type="text"
+            className="search-input"
+            placeholder="Search by name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <ul className="profile-list">
+            {filteredUsers.map(user => (
+              <UserProfile key={user.id} user={user} />
+            ))}
+          </ul>
+        </div>
+      );
+    };
+    
+    ReactDOM.render(<App />, document.getElementById('root'));
+    
+    </script>
+    
+  </script>
+</html>
